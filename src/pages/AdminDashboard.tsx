@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Users, Calendar, Settings, TrendingUp, Clock, MapPin } from 'lucide-react';
+import { Users, Calendar, Settings, TrendingUp, Clock } from 'lucide-react';
 
 const AdminDashboard = () => {
   const pendingRegistrations = [
@@ -64,13 +64,6 @@ const AdminDashboard = () => {
       color: "text-green-600"
     },
     {
-      title: "Aulas Disponibles",
-      value: "18",
-      description: "De 25 total",
-      icon: MapPin,
-      color: "text-purple-600"
-    },
-    {
       title: "Registros Pendientes",
       value: "2",
       description: "Esperando aprobación",
@@ -91,7 +84,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (

@@ -3,42 +3,11 @@ import Layout from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, MapPin, Users } from 'lucide-react';
+import { Calendar, Clock, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
   const { user } = useAuth();
-
-  const quickStats = [
-    {
-      title: "Reservas Activas",
-      value: "3",
-      description: "Este mes",
-      icon: Calendar,
-      color: "text-blue-600"
-    },
-    {
-      title: "Próxima Clase",
-      value: "2 hrs",
-      description: "Aula 205",
-      icon: Clock,
-      color: "text-green-600"
-    },
-    {
-      title: "Aulas Disponibles",
-      value: "12",
-      description: "Ahora mismo",
-      icon: MapPin,
-      color: "text-purple-600"
-    },
-    {
-      title: "Materiales",
-      value: "15",
-      description: "Disponibles",
-      icon: Users,
-      color: "text-orange-600"
-    }
-  ];
 
   const recentReservations = [
     {
@@ -78,29 +47,6 @@ const Dashboard = () => {
           <p className="text-blue-100">
             Gestione sus reservas de aulas y materiales de manera eficiente
           </p>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {quickStats.map((stat, index) => {
-            const Icon = stat.icon;
-            return (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">{stat.title}</p>
-                      <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-                      <p className="text-xs text-gray-500">{stat.description}</p>
-                    </div>
-                    <div className={`${stat.color}`}>
-                      <Icon className="h-8 w-8" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
         </div>
 
         {/* Quick Actions */}

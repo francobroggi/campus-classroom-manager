@@ -5,11 +5,17 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { MapPin, Users, Monitor, Plus, Edit } from 'lucide-react';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { MapPin, Users, Monitor, Plus, Edit, Calendar as CalendarIcon } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useState } from 'react';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 const ClassroomsAndMaterials = () => {
   const { isAdmin } = useAuth();
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   const classrooms = [
     {
@@ -59,6 +65,33 @@ const ClassroomsAndMaterials = () => {
     }
   ];
 
+  const reservationsForSelectedDate = [
+    {
+      id: 1,
+      time: "09:00 - 10:30",
+      classroom: "Room 101",
+      professor: "Dr. Sarah Lee",
+      course: "Matemáticas Avanzadas",
+      materials: ["Proyector"]
+    },
+    {
+      id: 2,
+      time: "14:00 - 15:30",
+      classroom: "Lab. Computación",
+      professor: "Prof. David Chen",
+      course: "Programación",
+      materials: ["Micrófonos", "Notebooks"]
+    },
+    {
+      id: 3,
+      time: "16:00 - 17:30",
+      classroom: "Aula Magna",
+      professor: "Dr. Emily Carter",
+      course: "Conferencia",
+      materials: ["Proyector", "Altavoces"]
+    }
+  ];
+
   return (
     <Layout>
       <div className="space-y-6">
@@ -81,6 +114,73 @@ const ClassroomsAndMaterials = () => {
             </div>
           )}
         </div>
+
+        {/* Date Selector for Availability */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Ver Disponibilidad por Día</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center space-x-4">
+              <Label htmlFor="date-picker">Seleccionar fecha:</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className="w-[280px] justify-start text-left font-normal">
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {selectedDate ? format(selectedDate, "PPP", { locale: es }) : "Seleccionar fecha"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={(date) => date && setSelectedDate(date)}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Reservations for Selected Date */}
+        <Card>
+          <CardHeader>
+            <CardTitle>
+              Reservas para {selectedDate ? format(selectedDate, "PPP", { locale: es }) : "Hoy"}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {reservationsForSelectedDate.map((reservation) => (
+                <div key={reservation.id} className="p-4 border rounded-lg">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <CalendarIcon className="h-6 w-6 text-blue-600" />
+                      </div>
+                      <div>
+                        <p className="font-semibold">{reservation.course}</p>
+                        <p className="text-sm text-gray-600">{reservation.professor}</p>
+                        <p className="text-sm text-gray-500">{reservation.classroom} • {reservation.time}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-medium text-gray-700">Materiales:</p>
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {reservation.materials.map((material, index) => (
+                          <Badge key={index} variant="outline" className="text-xs">
+                            {material}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Classrooms */}
