@@ -7,15 +7,17 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { MapPin, Users, Monitor, Plus, Edit, Calendar as CalendarIcon } from 'lucide-react';
+import { MapPin, Users, Monitor, Plus, Edit, Calendar as CalendarIcon, Trash2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState } from 'react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { useToast } from '@/hooks/use-toast';
 
 const ClassroomsAndMaterials = () => {
   const { isAdmin } = useAuth();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const { toast } = useToast();
 
   const classrooms = [
     {
@@ -91,6 +93,20 @@ const ClassroomsAndMaterials = () => {
       materials: ["Proyector", "Altavoces"]
     }
   ];
+
+  const handleDeleteClassroom = (classroomId: number, classroomName: string) => {
+    toast({
+      title: "Aula eliminada",
+      description: `${classroomName} ha sido eliminada exitosamente`,
+    });
+  };
+
+  const handleDeleteMaterial = (materialId: number, materialName: string) => {
+    toast({
+      title: "Material eliminado",
+      description: `${materialName} ha sido eliminado exitosamente`,
+    });
+  };
 
   return (
     <Layout>
@@ -198,9 +214,19 @@ const ClassroomsAndMaterials = () => {
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="font-semibold text-lg">{classroom.name}</h3>
                       {isAdmin && (
-                        <Button variant="ghost" size="sm">
-                          <Edit className="h-4 w-4" />
-                        </Button>
+                        <div className="flex space-x-2">
+                          <Button variant="ghost" size="sm">
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={() => handleDeleteClassroom(classroom.id, classroom.name)}
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
                       )}
                     </div>
                     
@@ -243,9 +269,19 @@ const ClassroomsAndMaterials = () => {
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="font-semibold">{material.name}</h3>
                       {isAdmin && (
-                        <Button variant="ghost" size="sm">
-                          <Edit className="h-4 w-4" />
-                        </Button>
+                        <div className="flex space-x-2">
+                          <Button variant="ghost" size="sm">
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={() => handleDeleteMaterial(material.id, material.name)}
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
                       )}
                     </div>
                     
@@ -263,64 +299,6 @@ const ClassroomsAndMaterials = () => {
             </CardContent>
           </Card>
         </div>
-
-        {/* Add Forms for Admin */}
-        {isAdmin && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Add Classroom Form */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Agregar Nueva Aula</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="classroom-name">Nombre del Aula</Label>
-                    <Input id="classroom-name" placeholder="Ej: Room 301" />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="classroom-capacity">Capacidad</Label>
-                    <Input id="classroom-capacity" type="number" placeholder="30" />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="classroom-location">Ubicación</Label>
-                    <Input id="classroom-location" placeholder="Ej: Main Building, 3rd Floor" />
-                  </div>
-                  
-                  <Button type="submit" className="w-full">
-                    Agregar Aula
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-
-            {/* Add Material Form */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Agregar Nuevo Material</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="material-name">Nombre del Material</Label>
-                    <Input id="material-name" placeholder="Ej: Laptop" />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="material-quantity">Cantidad</Label>
-                    <Input id="material-quantity" type="number" placeholder="5" />
-                  </div>
-                  
-                  <Button type="submit" className="w-full">
-                    Agregar Material
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
-        )}
       </div>
     </Layout>
   );

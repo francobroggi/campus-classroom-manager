@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Textarea } from '@/components/ui/textarea';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -36,8 +35,7 @@ const NewReservation = () => {
       speakers: 0,
       markers: 0,
       whiteboards: 0
-    },
-    observations: ''
+    }
   });
 
   const classroomTypes = [
@@ -218,25 +216,6 @@ const NewReservation = () => {
                     )}
                   </div>
                 ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Observations */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Observaciones</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <Label htmlFor="observations">Comentarios adicionales (opcional)</Label>
-                <Textarea
-                  id="observations"
-                  placeholder="Ej: Necesito que el proyector esté configurado antes de la clase..."
-                  value={formData.observations}
-                  onChange={(e) => setFormData(prev => ({ ...prev, observations: e.target.value }))}
-                  rows={3}
-                />
               </div>
             </CardContent>
           </Card>

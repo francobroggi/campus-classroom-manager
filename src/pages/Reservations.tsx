@@ -1,14 +1,18 @@
-
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, MapPin, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import { Calendar, Clock, MapPin, Plus, ChevronLeft, ChevronRight, MessageSquare } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
 
 const Reservations = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [observations, setObservations] = useState<{[key: string]: string}>({});
+  const [showObservationForm, setShowObservationForm] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const reservations = [
     {
@@ -16,23 +20,38 @@ const Reservations = () => {
       date: "26 Oct 2024",
       time: "10:00 AM - 11:00 AM",
       classroom: "Room 201",
-      status: "Confirmada"
+      status: "Confirmada",
+      observation: ""
     },
     {
       id: "2", 
       date: "1 Nov 2024",
       time: "2:00 PM - 3:00 PM",
       classroom: "Room 305",
-      status: "Pendiente"
+      status: "Pendiente",
+      observation: ""
     },
     {
       id: "3",
       date: "15 Nov 2024",
       time: "9:00 AM - 10:00 AM", 
       classroom: "Room 102",
-      status: "Confirmada"
+      status: "Confirmada",
+      observation: "El proyector funcionó perfectamente"
     }
   ];
+
+  const handleSaveObservation = (reservationId: string) => {
+    const observation = observations[reservationId] || '';
+    
+    toast({
+      title: "Observación guardada",
+      description: "Su observación ha sido registrada exitosamente",
+    });
+    
+    setShowObservationForm(null);
+    setObservations(prev => ({ ...prev, [reservationId]: '' }));
+  };
 
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
@@ -159,7 +178,7 @@ const Reservations = () => {
                         {reservation.status}
                       </Badge>
                     </div>
-                    <div className="flex items-center space-x-4 text-sm text-gray-600">
+                    <div className="flex items-center space-x-4 text-sm text-gray-600 mb-3">
                       <div className="flex items-center space-x-1">
                         <Clock className="h-4 w-4" />
                         <span>{reservation.time}</span>
@@ -169,7 +188,59 @@ const Reservations = () => {
                         <span>{reservation.classroom}</span>
                       </div>
                     </div>
-                    <div className="mt-3 flex justify-end">
+                    
+                    {/* Existing Observation */}
+                    {reservation.observation && (
+                      <div className="mb-3 p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center space-x-2 mb-1">
+                          <MessageSquare className="h-4 w-4 text-gray-600" />
+                          <span className="text-sm font-medium text-gray-700">Observación:</span>
+                        </div>
+                        <p className="text-sm text-gray-600">{reservation.observation}</p>
+                      </div>
+                    )}
+                    
+                    {/* Observation Form */}
+                    {showObservationForm === reservation.id && (
+                      <div className="mb-3 space-y-3">
+                        <Textarea
+                          placeholder="Escriba sus observaciones sobre el aula o materiales utilizados..."
+                          value={observations[reservation.id] || ''}
+                          onChange={(e) => setObservations(prev => ({ 
+                            ...prev, 
+                            [reservation.id]: e.target.value 
+                          }))}
+                          rows={3}
+                        />
+                        <div className="flex space-x-2">
+                          <Button 
+                            size="sm" 
+                            onClick={() => handleSaveObservation(reservation.id)}
+                            className="bg-green-600 hover:bg-green-700"
+                          >
+                            Guardar
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            onClick={() => setShowObservationForm(null)}
+                          >
+                            Cancelar
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="flex justify-between">
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        onClick={() => setShowObservationForm(reservation.id)}
+                        className="text-blue-600 hover:text-blue-700"
+                      >
+                        <MessageSquare className="h-4 w-4 mr-1" />
+                        {reservation.observation ? 'Editar Observación' : 'Agregar Observación'}
+                      </Button>
                       <Link to={`/reservation/${reservation.id}`}>
                         <Button variant="outline" size="sm">Ver Detalles</Button>
                       </Link>
