@@ -106,32 +106,6 @@ const ReservationDetails = () => {
           </CardContent>
         </Card>
 
-        {/* Materials */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Materiales</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {reservation.materials.map((material, index) => (
-                <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                      <Eye className="h-5 w-5 text-gray-600" />
-                    </div>
-                    <div>
-                      <p className="font-medium">{material.name}</p>
-                      <p className="text-sm text-gray-600">Cantidad: {material.quantity}</p>
-                    </div>
-                  </div>
-                  <Badge variant={material.status === 'Available' ? 'default' : 'secondary'}>
-                    {material.status}
-                  </Badge>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Observations */}
         <Card>

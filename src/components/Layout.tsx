@@ -54,7 +54,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* Main content */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <header className="bg-white shadow-sm border-b px-6 py-4">
+        <header className="bg-white shadow-sm border-b px-6 py-4 ml-0">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-semibold text-gray-800">
               {navigation.find(item => item.href === location.pathname)?.name || 'Dashboard'}

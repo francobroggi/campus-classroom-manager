@@ -20,6 +20,7 @@ const Reservations = () => {
   const [showAvailabilityModal, setShowAvailabilityModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedClassroom, setSelectedClassroom] = useState<string>('');
+  const [selectedDay, setSelectedDay] = useState<number>(new Date().getDate());
   const { toast } = useToast();
 
   const reservations = [
@@ -182,12 +183,13 @@ const Reservations = () => {
                   <div
                     key={index}
                     className={`text-center p-2 text-sm cursor-pointer hover:bg-gray-100 rounded ${
-                      day === 5 ? 'bg-blue-600 text-white hover:bg-blue-700' :
+                      day === selectedDay ? 'bg-blue-600 text-white hover:bg-blue-700' :
                       isDateHighlighted(day) ? 'bg-blue-100 text-blue-700' : 
                       day ? 'text-gray-900' : 'text-gray-300'
                     }`}
                     onClick={() => {
                       if (day) {
+                        setSelectedDay(day);
                         const newDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
                         setSelectedDate(newDate);
                         setShowAvailabilityModal(true);
