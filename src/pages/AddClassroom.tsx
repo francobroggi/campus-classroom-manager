@@ -87,46 +87,16 @@ const AddClassroom = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="capacity">Capacidad</Label>
-                  <Input
-                    id="capacity"
-                    type="number"
-                    placeholder="Ej: 30"
-                    value={formData.capacity}
-                    onChange={(e) => setFormData(prev => ({ ...prev, capacity: e.target.value }))}
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="floor">Piso</Label>
-                  <Select value={formData.floor} onValueChange={(value) => 
-                    setFormData(prev => ({ ...prev, floor: value }))
-                  }>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Seleccionar piso" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">Primer Piso</SelectItem>
-                      <SelectItem value="2">Segundo Piso</SelectItem>
-                      <SelectItem value="3">Tercer Piso</SelectItem>
-                      <SelectItem value="4">Cuarto Piso</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="location">Ubicación</Label>
-                  <Input
-                    id="location"
-                    placeholder="Ej: Edificio A"
-                    value={formData.location}
-                    onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
-                    required
-                  />
-                </div>
+              <div className="space-y-2">
+                <Label htmlFor="capacity">Capacidad</Label>
+                <Input
+                  id="capacity"
+                  type="number"
+                  placeholder="Ej: 30"
+                  value={formData.capacity}
+                  onChange={(e) => setFormData(prev => ({ ...prev, capacity: e.target.value }))}
+                  required
+                />
               </div>
 
               <div className="space-y-2">

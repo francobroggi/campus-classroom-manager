@@ -102,13 +102,6 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <div className="flex items-center space-x-4">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      reservation.status === 'Confirmada' 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}>
-                      {reservation.status}
-                    </span>
                     <Link to={`/reservation/${reservation.id}`}>
                       <Button variant="ghost" size="sm">Ver Detalles</Button>
                     </Link>

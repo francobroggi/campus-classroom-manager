@@ -169,14 +169,11 @@ const Reservations = () => {
               <div className="space-y-4">
                 {reservations.map((reservation) => (
                   <div key={reservation.id} className="p-4 border rounded-lg hover:shadow-md transition-shadow">
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center mb-2">
                       <div className="flex items-center space-x-2">
                         <Calendar className="h-4 w-4 text-blue-600" />
                         <span className="font-medium">{reservation.date}</span>
                       </div>
-                      <Badge variant={reservation.status === 'Confirmada' ? 'default' : 'secondary'}>
-                        {reservation.status}
-                      </Badge>
                     </div>
                     <div className="flex items-center space-x-4 text-sm text-gray-600 mb-3">
                       <div className="flex items-center space-x-1">
