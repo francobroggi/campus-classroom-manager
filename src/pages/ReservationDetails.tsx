@@ -133,45 +133,21 @@ const ReservationDetails = () => {
           </CardContent>
         </Card>
 
-        {/* Comments */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <MessageSquare className="h-5 w-5" />
-              <span>Comentarios</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {reservation.comments.map((comment) => (
-                <div key={comment.id} className="flex space-x-3">
-                  <Avatar>
-                    <AvatarFallback>EC</AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <p className="font-medium">{comment.author}</p>
-                      <p className="text-sm text-gray-500">{comment.date}</p>
-                    </div>
-                    <p className="text-gray-700">{comment.message}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Observations */}
         <Card>
           <CardHeader>
-            <CardTitle>Observaciones</CardTitle>
+            <CardTitle>Observaciones del Profesor</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {reservation.observations.map((observation) => (
+              {reservation.observations
+                .filter(observation => observation.author.includes('Dr.') || observation.author.includes('Prof.'))
+                .map((observation) => (
                 <div key={observation.id} className="flex space-x-3">
                   <Avatar>
-                    <AvatarFallback>FS</AvatarFallback>
+                    <AvatarFallback>
+                      {observation.author.split(' ').map(n => n[0]).join('')}
+                    </AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-1">
@@ -182,6 +158,9 @@ const ReservationDetails = () => {
                   </div>
                 </div>
               ))}
+              {reservation.observations.filter(observation => observation.author.includes('Dr.') || observation.author.includes('Prof.')).length === 0 && (
+                <p className="text-gray-500 text-center py-4">No hay observaciones del profesor para esta reserva.</p>
+              )}
             </div>
           </CardContent>
         </Card>
