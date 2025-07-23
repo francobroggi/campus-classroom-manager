@@ -13,9 +13,11 @@ import { useState } from 'react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 const ClassroomsAndMaterials = () => {
   const { isAdmin } = useAuth();
+  const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const { toast } = useToast();
 
@@ -119,7 +121,10 @@ const ClassroomsAndMaterials = () => {
           </div>
           {isAdmin && (
             <div className="flex space-x-2">
-              <Button className="bg-blue-600 hover:bg-blue-700">
+              <Button 
+                className="bg-blue-600 hover:bg-blue-700"
+                onClick={() => navigate('/admin/add-classroom')}
+              >
                 <Plus className="mr-2 h-4 w-4" />
                 Agregar Aula
               </Button>

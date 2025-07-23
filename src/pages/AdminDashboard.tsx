@@ -106,26 +106,6 @@ const AdminDashboard = () => {
           })}
         </div>
 
-        {/* Quick Actions */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Acciones Rápidas</CardTitle>
-            <CardDescription>Accesos directos a las funciones administrativas más utilizadas</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Button className="h-16 bg-blue-600 hover:bg-blue-700 flex flex-col items-center justify-center space-y-2">
-                <Users className="h-6 w-6" />
-                <span>Gestionar Aulas</span>
-              </Button>
-              
-              <Button variant="outline" className="h-16 flex flex-col items-center justify-center space-y-2">
-                <Settings className="h-6 w-6" />
-                <span>Gestionar Materiales</span>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Pending Registrations */}

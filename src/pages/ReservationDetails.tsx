@@ -46,20 +46,9 @@ const ReservationDetails = () => {
     <Layout>
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
-        <div className="flex justify-between items-start">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Detalles de Reserva</h1>
-            <p className="text-gray-600 mt-1">ID de Reserva: {reservation.id}</p>
-          </div>
-          
-          <div className="flex space-x-3">
-            <Button className="bg-blue-600 hover:bg-blue-700">
-              Editar Reserva
-            </Button>
-            <Button variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50">
-              Cancelar
-            </Button>
-          </div>
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Detalles de Reserva</h1>
+          <p className="text-gray-600 mt-1">ID de Reserva: {reservation.id}</p>
         </div>
 
         {/* Reservation Information */}
@@ -112,15 +101,6 @@ const ReservationDetails = () => {
                   </div>
                 </div>
                 
-                <div className="flex items-center space-x-3">
-                  <div className="w-5 h-5 flex items-center justify-center">
-                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Estado</p>
-                    <Badge variant="default">{reservation.status}</Badge>
-                  </div>
-                </div>
               </div>
             </div>
           </CardContent>

@@ -14,6 +14,7 @@ import NewReservation from "./pages/NewReservation";
 import ClassroomsAndMaterials from "./pages/ClassroomsAndMaterials";
 import ReservationDetails from "./pages/ReservationDetails";
 import AdminDashboard from "./pages/AdminDashboard";
+import AddClassroom from "./pages/AddClassroom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./pages/NotFound";
 
@@ -58,6 +59,16 @@ const App = () => (
             <Route path="/admin" element={
               <ProtectedRoute requireAdmin={true}>
                 <AdminDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/classrooms-materials" element={
+              <ProtectedRoute requireAdmin={true}>
+                <ClassroomsAndMaterials />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/add-classroom" element={
+              <ProtectedRoute requireAdmin={true}>
+                <AddClassroom />
               </ProtectedRoute>
             } />
             <Route path="*" element={<NotFound />} />

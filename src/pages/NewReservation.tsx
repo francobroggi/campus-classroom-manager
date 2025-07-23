@@ -16,6 +16,7 @@ const NewReservation = () => {
   
   const [formData, setFormData] = useState({
     classroomType: '',
+    classroomNumber: '',
     date: '',
     startTime: '',
     endTime: '',
@@ -125,6 +126,38 @@ const NewReservation = () => {
                 </div>
 
                 <div className="space-y-2">
+                  <Label htmlFor="classroomNumber">Número de Aula</Label>
+                  <Select value={formData.classroomNumber || ''} onValueChange={(value) => 
+                    setFormData(prev => ({ ...prev, classroomNumber: value }))
+                  }>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Seleccionar número de aula" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="101">Aula 101</SelectItem>
+                      <SelectItem value="102">Aula 102</SelectItem>
+                      <SelectItem value="201">Aula 201</SelectItem>
+                      <SelectItem value="202">Aula 202</SelectItem>
+                      <SelectItem value="301">Aula 301</SelectItem>
+                      <SelectItem value="302">Aula 302</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="date">Fecha</Label>
+                  <Input
+                    id="date"
+                    type="date"
+                    value={formData.date}
+                    onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
                   <Label htmlFor="course">Materia/Curso</Label>
                   <Input
                     id="course"
@@ -134,17 +167,6 @@ const NewReservation = () => {
                     required
                   />
                 </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="date">Fecha</Label>
-                <Input
-                  id="date"
-                  type="date"
-                  value={formData.date}
-                  onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
-                  required
-                />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
