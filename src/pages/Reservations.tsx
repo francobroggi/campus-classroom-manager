@@ -143,21 +143,12 @@ const Reservations = () => {
             <h1 className="text-3xl font-bold text-gray-900">Reservas de Aulas</h1>
             <p className="text-gray-600 mt-1">Gestione sus reservas y vea la disponibilidad</p>
           </div>
-          <div className="flex space-x-2">
-            <Button 
-              variant="outline"
-              onClick={() => setShowAvailabilityModal(true)}
-            >
-              <Search className="mr-2 h-4 w-4" />
-              Ver Disponibilidad
+          <Link to="/new-reservation">
+            <Button className="bg-blue-600 hover:bg-blue-700">
+              <Plus className="mr-2 h-4 w-4" />
+              Nueva Reserva
             </Button>
-            <Link to="/new-reservation">
-              <Button className="bg-blue-600 hover:bg-blue-700">
-                <Plus className="mr-2 h-4 w-4" />
-                Nueva Reserva
-              </Button>
-            </Link>
-          </div>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -195,6 +186,13 @@ const Reservations = () => {
                       isDateHighlighted(day) ? 'bg-blue-100 text-blue-700' : 
                       day ? 'text-gray-900' : 'text-gray-300'
                     }`}
+                    onClick={() => {
+                      if (day) {
+                        const newDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+                        setSelectedDate(newDate);
+                        setShowAvailabilityModal(true);
+                      }
+                    }}
                   >
                     {day}
                   </div>

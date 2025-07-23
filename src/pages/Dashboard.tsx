@@ -71,7 +71,7 @@ const Dashboard = () => {
                 </Button>
               </Link>
               
-              <Link to="/classrooms-materials">
+              <Link to="/reservations">
                 <Button variant="outline" className="w-full h-20 flex flex-col items-center justify-center space-y-2">
                   <MapPin className="h-6 w-6" />
                   <span>Ver Disponibilidad</span>
