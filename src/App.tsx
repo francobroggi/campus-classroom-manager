@@ -15,6 +15,7 @@ import ClassroomsAndMaterials from "./pages/ClassroomsAndMaterials";
 import ReservationDetails from "./pages/ReservationDetails";
 import AdminDashboard from "./pages/AdminDashboard";
 import AddClassroom from "./pages/AddClassroom";
+import AddMaterial from "./pages/AddMaterial";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./pages/NotFound";
 
@@ -69,6 +70,11 @@ const App = () => (
             <Route path="/admin/add-classroom" element={
               <ProtectedRoute requireAdmin={true}>
                 <AddClassroom />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/add-material" element={
+              <ProtectedRoute requireAdmin={true}>
+                <AddMaterial />
               </ProtectedRoute>
             } />
             <Route path="*" element={<NotFound />} />

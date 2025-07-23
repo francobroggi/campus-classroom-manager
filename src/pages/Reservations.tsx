@@ -3,15 +3,23 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
-import { Calendar, Clock, MapPin, Plus, ChevronLeft, ChevronRight, MessageSquare } from 'lucide-react';
+import { Calendar, Clock, MapPin, Plus, ChevronLeft, ChevronRight, MessageSquare, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
 
 const Reservations = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [observations, setObservations] = useState<{[key: string]: string}>({});
   const [showObservationForm, setShowObservationForm] = useState<string | null>(null);
+  const [showAvailabilityModal, setShowAvailabilityModal] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [selectedClassroom, setSelectedClassroom] = useState<string>('');
   const { toast } = useToast();
 
   const reservations = [
@@ -40,6 +48,32 @@ const Reservations = () => {
       observation: "El proyector funcionó perfectamente"
     }
   ];
+
+  const classrooms = [
+    { id: "1", name: "Room 101", capacity: 30 },
+    { id: "2", name: "Room 201", capacity: 25 },
+    { id: "3", name: "Room 305", capacity: 40 },
+    { id: "4", name: "Lab A", capacity: 20 },
+    { id: "5", name: "Auditorium", capacity: 150 }
+  ];
+
+  const getClassroomAvailability = (classroom: string, date: Date) => {
+    // Simulated availability data
+    const timeSlots = [
+      "08:00 - 09:00", "09:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00",
+      "12:00 - 13:00", "13:00 - 14:00", "14:00 - 15:00", "15:00 - 16:00",
+      "16:00 - 17:00", "17:00 - 18:00"
+    ];
+    
+    // Mock some occupied slots
+    const occupiedSlots = ["09:00 - 10:00", "14:00 - 15:00"];
+    
+    return timeSlots.map(slot => ({
+      time: slot,
+      available: !occupiedSlots.includes(slot),
+      professor: occupiedSlots.includes(slot) ? "Dr. Sarah Lee" : null
+    }));
+  };
 
   const handleSaveObservation = (reservationId: string) => {
     const observation = observations[reservationId] || '';
@@ -109,12 +143,21 @@ const Reservations = () => {
             <h1 className="text-3xl font-bold text-gray-900">Reservas de Aulas</h1>
             <p className="text-gray-600 mt-1">Gestione sus reservas y vea la disponibilidad</p>
           </div>
-          <Link to="/new-reservation">
-            <Button className="bg-blue-600 hover:bg-blue-700">
-              <Plus className="mr-2 h-4 w-4" />
-              Nueva Reserva
+          <div className="flex space-x-2">
+            <Button 
+              variant="outline"
+              onClick={() => setShowAvailabilityModal(true)}
+            >
+              <Search className="mr-2 h-4 w-4" />
+              Ver Disponibilidad
             </Button>
-          </Link>
+            <Link to="/new-reservation">
+              <Button className="bg-blue-600 hover:bg-blue-700">
+                <Plus className="mr-2 h-4 w-4" />
+                Nueva Reserva
+              </Button>
+            </Link>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -248,6 +291,124 @@ const Reservations = () => {
             </CardContent>
           </Card>
         </div>
+
+        {/* Availability Modal */}
+        {showAvailabilityModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900">Disponibilidad de Aulas</h2>
+                  <Button 
+                    variant="ghost" 
+                    onClick={() => setShowAvailabilityModal(false)}
+                    className="text-gray-400 hover:text-gray-600"
+                  >
+                    ✕
+                  </Button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div className="space-y-2">
+                    <Label>Fecha</Label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button variant="outline" className="w-full justify-start text-left font-normal">
+                          <Calendar className="mr-2 h-4 w-4" />
+                          {selectedDate ? format(selectedDate, "PPP", { locale: es }) : "Seleccionar fecha"}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <div className="p-3">
+                          <div className="grid grid-cols-7 gap-1 mb-4">
+                            {dayNames.map(day => (
+                              <div key={day} className="text-center text-sm font-medium text-gray-500 p-2">
+                                {day}
+                              </div>
+                            ))}
+                          </div>
+                          <div className="grid grid-cols-7 gap-1">
+                            {getDaysInMonth(currentMonth).map((day, index) => (
+                              <div
+                                key={index}
+                                className={`text-center p-2 text-sm cursor-pointer hover:bg-gray-100 rounded ${
+                                  day ? 'text-gray-900' : 'text-gray-300'
+                                }`}
+                                onClick={() => {
+                                  if (day) {
+                                    const newDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+                                    setSelectedDate(newDate);
+                                  }
+                                }}
+                              >
+                                {day}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Aula</Label>
+                    <Select value={selectedClassroom} onValueChange={setSelectedClassroom}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleccionar aula" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {classrooms.map((classroom) => (
+                          <SelectItem key={classroom.id} value={classroom.name}>
+                            {classroom.name} (Capacidad: {classroom.capacity})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                {selectedDate && selectedClassroom && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>
+                        Disponibilidad de {selectedClassroom} - {format(selectedDate, "PPP", { locale: es })}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {getClassroomAvailability(selectedClassroom, selectedDate).map((slot, index) => (
+                          <div
+                            key={index}
+                            className={`p-3 border rounded-lg ${
+                              slot.available 
+                                ? 'border-green-200 bg-green-50' 
+                                : 'border-red-200 bg-red-50'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="font-medium">{slot.time}</span>
+                              <Badge 
+                                variant={slot.available ? "default" : "secondary"}
+                                className={slot.available ? "bg-green-600" : "bg-red-600"}
+                              >
+                                {slot.available ? "Disponible" : "Ocupado"}
+                              </Badge>
+                            </div>
+                            {slot.professor && (
+                              <p className="text-sm text-gray-600 mt-1">
+                                Reservado por: {slot.professor}
+                              </p>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );

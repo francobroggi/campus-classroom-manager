@@ -128,7 +128,10 @@ const ClassroomsAndMaterials = () => {
                 <Plus className="mr-2 h-4 w-4" />
                 Agregar Aula
               </Button>
-              <Button variant="outline">
+              <Button 
+                variant="outline"
+                onClick={() => navigate('/admin/add-material')}
+              >
                 <Plus className="mr-2 h-4 w-4" />
                 Agregar Material
               </Button>
@@ -184,16 +187,6 @@ const ClassroomsAndMaterials = () => {
                         <p className="font-semibold">{reservation.course}</p>
                         <p className="text-sm text-gray-600">{reservation.professor}</p>
                         <p className="text-sm text-gray-500">{reservation.classroom} • {reservation.time}</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm font-medium text-gray-700">Materiales:</p>
-                      <div className="flex flex-wrap gap-1 mt-1">
-                        {reservation.materials.map((material, index) => (
-                          <Badge key={index} variant="outline" className="text-xs">
-                            {material}
-                          </Badge>
-                        ))}
                       </div>
                     </div>
                   </div>

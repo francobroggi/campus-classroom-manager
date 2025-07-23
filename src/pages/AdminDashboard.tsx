@@ -107,46 +107,7 @@ const AdminDashboard = () => {
         </div>
 
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Pending Registrations */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <Users className="h-5 w-5" />
-                <span>Registros Pendientes</span>
-              </CardTitle>
-              <CardDescription>Nuevos profesores esperando aprobación</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {pendingRegistrations.map((registration) => (
-                  <div key={registration.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center space-x-3">
-                      <Avatar>
-                        <AvatarFallback>
-                          {registration.name.split(' ').map(n => n[0]).join('')}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="font-medium">{registration.name}</p>
-                        <p className="text-sm text-gray-600">{registration.email}</p>
-                        <p className="text-xs text-gray-500">{registration.department}</p>
-                      </div>
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button size="sm" className="bg-green-600 hover:bg-green-700">
-                        Aprobar
-                      </Button>
-                      <Button size="sm" variant="outline">
-                        Rechazar
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
+        <div className="grid grid-cols-1 gap-6">
           {/* Recent Activity */}
           <Card>
             <CardHeader>
